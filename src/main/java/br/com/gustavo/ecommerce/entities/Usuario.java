@@ -23,7 +23,7 @@ public class Usuario {
 
     // Um Usuário pode ter vários Pedidos
     @OneToMany(mappedBy = "cliente")
-    private List<Pedido> pedidos = new ArrayList<>();
+    private List<Pedido> pedidos = new ArrayList<>(); // geramos apenas o get com List, nunca um set
 
 
     public Usuario() {
