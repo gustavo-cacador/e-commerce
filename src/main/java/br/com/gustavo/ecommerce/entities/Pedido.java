@@ -15,7 +15,7 @@ public class Pedido {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant momento; // momento em que o pedido foi feito
 
-    private OrderStatus status;
+    private PedidoStatus status;
 
 
     // Muitos Pedidos para um Usuário
