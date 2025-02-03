@@ -41,18 +41,6 @@ public class Usuario {
         this.senha = senha;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Usuario user = (Usuario) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(telefone, user.telefone);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, telefone);
-    }
-
     public Long getId() {
         return id;
     }
@@ -103,5 +91,17 @@ public class Usuario {
 
     public List<Pedido> getPedidos() {
         return pedidos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
