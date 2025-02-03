@@ -16,7 +16,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(unique = true) // com isso o email n vai se repetir no banco de dados, vai ter apenas um
     private String email;
+
     private String telefone;
     private LocalDate dataNascimento;
     private String senha;
