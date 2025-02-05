@@ -15,16 +15,6 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    /*
-    @Transactional(readOnly = true)
-    public ProdutoDTO findById(Long id) {
-        Optional<Produto> result = produtoRepository.findById(id);
-        Produto produto = result.get();
-        ProdutoDTO dto = new ProdutoDTO(produto);
-        return dto;
-    }
-     */
-
     @Transactional(readOnly = true)
     public ProdutoDTO findById(Long id) {
         Produto produto = produtoRepository.findById(id).get();
