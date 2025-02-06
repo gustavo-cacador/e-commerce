@@ -24,9 +24,36 @@ public class ProdutoService {
         return new ProdutoDTO(produto);
     }
 
+    // Para buscar todos os produtos da lista
+    /*
+    @Transactional(readOnly = true)
+    public List<ProdutoDTO> buscarTodos() {
+        List<Produto> result = produtoRepository.findAll();
+        return result
+                .stream()
+                .map(x -> new ProdutoDTO(x))
+                .toList();
+    }
+     */
+
     @Transactional(readOnly = true)
     public Page<ProdutoDTO> findAll(Pageable pageable) {
         Page<Produto> result = produtoRepository.findAll(pageable);
         return result.map(x -> new ProdutoDTO(x));
     }
+
+    @Transactional
+    public ProdutoDTO insert(ProdutoDTO dto) {
+
+        Produto entity = new Produto();
+        entity.setNome(dto.getNome());
+        entity.setDescricao(dto.getDescricao());
+        entity.setPreco(dto.getPreco());
+        entity.setImgUrl(dto.getImgUrl());
+
+        entity = produtoRepository.save(entity);
+
+        return new ProdutoDTO(entity);
+    }
+
 }

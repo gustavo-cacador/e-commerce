@@ -6,10 +6,7 @@ import br.com.gustavo.ecommerce.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,8 +22,22 @@ public class ProdutoController {
         return produtoService.findById(id);
     }
 
+    // Para buscar todos os produtos da lista
+    /*
+    @GetMapping
+    public List<ProdutoDTO> buscarTodos() {
+        return produtoService.buscarTodos();
+    }
+     */
+
     @GetMapping
     public Page<ProdutoDTO> findAll(Pageable pageable) {
         return produtoService.findAll(pageable);
     }
+
+    @PostMapping
+    public ProdutoDTO insert(@RequestBody ProdutoDTO dto) {
+        return produtoService.insert(dto);
+    }
+
 }
