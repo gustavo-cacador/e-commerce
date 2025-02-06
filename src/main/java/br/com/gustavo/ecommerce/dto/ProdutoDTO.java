@@ -11,8 +11,7 @@ public class ProdutoDTO {
     private Double preco;
     private String imgUrl;
 
-    public ProdutoDTO() {
-    }
+    // Como não vamos gerar Set, pois queremos inserir os dados, n iremos adicionar um construtor vazio, apenas o construtor com os parâmetros (atributos).
 
     public ProdutoDTO(Long id, String nome, String descricao, Double preco, String imgUrl) {
         this.id = id;
