@@ -6,8 +6,11 @@ import br.com.gustavo.ecommerce.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,8 +21,9 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping(value = "/{id}")
-    public ProdutoDTO findById(@PathVariable Long id) {
-        return produtoService.findById(id);
+    public ResponseEntity<ProdutoDTO> findById(@PathVariable Long id) {
+        ProdutoDTO dto = produtoService.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     // Para buscar todos os produtos da lista
@@ -31,13 +35,17 @@ public class ProdutoController {
      */
 
     @GetMapping
-    public Page<ProdutoDTO> findAll(Pageable pageable) {
-        return produtoService.findAll(pageable);
+    public ResponseEntity<Page<ProdutoDTO>> findAll(Pageable pageable) {
+        Page<ProdutoDTO> dto = produtoService.findAll(pageable);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ProdutoDTO insert(@RequestBody ProdutoDTO dto) {
-        return produtoService.insert(dto);
+    public ResponseEntity<ProdutoDTO> insert(@RequestBody ProdutoDTO dto) {
+        dto = produtoService.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
 }
