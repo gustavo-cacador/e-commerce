@@ -3,6 +3,7 @@ package br.com.gustavo.ecommerce.controllers;
 
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
 import br.com.gustavo.ecommerce.services.ProdutoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDTO> insert(@RequestBody ProdutoDTO dto) {
+    public ResponseEntity<ProdutoDTO> insert(@Valid @RequestBody ProdutoDTO dto) {
         dto = produtoService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
@@ -49,7 +50,7 @@ public class ProdutoController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @RequestBody ProdutoDTO dto) {
+    public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @Valid @RequestBody ProdutoDTO dto) {
         dto = produtoService.update(id, dto);
         return ResponseEntity.ok(dto);
     }

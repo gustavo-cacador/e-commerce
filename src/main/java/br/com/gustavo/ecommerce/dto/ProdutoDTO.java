@@ -2,13 +2,25 @@ package br.com.gustavo.ecommerce.dto;
 
 import br.com.gustavo.ecommerce.entities.Produto;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class ProdutoDTO {
 
     private Long id;
+
+    @Size(min = 3, max = 80, message = "Nome precisa ter de 3 a 80 caracteres")
+    @NotBlank(message = "Campo requerido")
     private String nome;
+
+    @Size(min = 10, message = "Descrição precisa ter no mínimo 10 caracteres")
+    @NotBlank(message = "Campo requerido")
     private String descricao;
+
+    @Positive(message = "O preço precisa ser positivo")
     private Double preco;
+
     private String imgUrl;
 
     public ProdutoDTO() {
