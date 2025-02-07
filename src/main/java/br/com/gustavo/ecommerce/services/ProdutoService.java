@@ -3,12 +3,15 @@ package br.com.gustavo.ecommerce.services;
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
 import br.com.gustavo.ecommerce.entities.Produto;
 import br.com.gustavo.ecommerce.repositories.ProdutoRepository;
+import br.com.gustavo.ecommerce.services.exceptions.DatabaseException;
 import br.com.gustavo.ecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.parser.Entity;
@@ -61,14 +64,20 @@ public class ProdutoService {
             copyDtoToEntity(dto, entity);
             entity = produtoRepository.save(entity);
             return new ProdutoDTO(entity);
-        }
-        catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Produto com id: " + id + ", não encontrado.");
         }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
+        if (!produtoRepository.existsById(id)){
+            throw new ResourceNotFoundException("Produto com id: " + id + ", não encontrado.");
+        } try {
+            produtoRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Falha de integridade referencial");
+        }
         produtoRepository.deleteById(id);
     }
 
