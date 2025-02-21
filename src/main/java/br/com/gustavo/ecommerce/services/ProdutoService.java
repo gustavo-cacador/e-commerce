@@ -44,8 +44,8 @@ public class ProdutoService {
      */
 
     @Transactional(readOnly = true)
-    public Page<ProdutoDTO> findAll(Pageable pageable) {
-        Page<Produto> result = produtoRepository.findAll(pageable);
+    public Page<ProdutoDTO> findAll(String name, Pageable pageable) {
+        Page<Produto> result = produtoRepository.searchByName(name, pageable);
         return result.map(x -> new ProdutoDTO(x));
     }
 
