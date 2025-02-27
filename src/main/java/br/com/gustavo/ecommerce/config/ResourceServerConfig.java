@@ -78,6 +78,9 @@ public class ResourceServerConfig {
 		return source;
 	}
 
+
+	// comentando metodo pois contém algum erro
+	/*
 	@Bean
 	FilterRegistrationBean<CorsFilter> corsFilter() {
 		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(
@@ -85,4 +88,5 @@ public class ResourceServerConfig {
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}
+	 */
 }
