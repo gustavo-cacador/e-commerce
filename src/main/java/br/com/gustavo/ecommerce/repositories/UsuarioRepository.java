@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Usuario findByEmail(String email);
+    //Usuario findByEmail(String email);
 
     @Query(nativeQuery = true, value = """
 			SELECT tb_usuario.email AS username, tb_usuario.senha, tb_role.id AS roleId, tb_role.authority
