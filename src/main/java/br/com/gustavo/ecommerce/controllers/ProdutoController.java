@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,6 +22,7 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProdutoDTO> findById(@PathVariable Long id) {
         ProdutoDTO dto = produtoService.findById(id);
@@ -41,6 +43,7 @@ public class ProdutoController {
         return ResponseEntity.ok(dto);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ProdutoDTO> insert(@Valid @RequestBody ProdutoDTO dto) {
         dto = produtoService.insert(dto);
