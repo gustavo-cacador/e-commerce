@@ -30,6 +30,8 @@ public class ResourceServerConfig {
 	@Value("${cors.origins}")
 	private String corsOrigins;
 
+	// configuracao h2
+	// aqui liberamos h2 console no modo teste
 	@Bean
 	@Profile("test")
 	@Order(1)
@@ -62,6 +64,10 @@ public class ResourceServerConfig {
 		return jwtAuthenticationConverter;
 	}
 
+
+	// CORS = não deixa que um backend seja acessado por um host que não seja autorizado
+	// os acessos do sistema vai ser configurado pelo cors, permitindo ou não que tais aplicações sejam acessadas
+	// exemplo: usuario n pode acessar "crud" dos produtos
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 

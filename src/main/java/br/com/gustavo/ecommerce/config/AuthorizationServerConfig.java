@@ -97,11 +97,14 @@ public class AuthorizationServerConfig {
 		return new InMemoryOAuth2AuthorizationConsentService();
 	}
 
+	// criptografa a senha
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
+	// registra o nosso client
+	// configura que o client esteja autorizado para acessar a aplicação
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
 		// @formatter:off
@@ -125,11 +128,13 @@ public class AuthorizationServerConfig {
 		// @formatter:off
 		return TokenSettings.builder()
 			.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-			.accessTokenTimeToLive(Duration.ofSeconds(jwtDurationSeconds))
+			.accessTokenTimeToLive(Duration.ofSeconds(jwtDurationSeconds)) // duração do token (1dia) através do resources
 			.build();
 		// @formatter:on
 	}
 
+	// serve para instanciar o client
+	// configurações da aplicação client
 	@Bean
 	public ClientSettings clientSettings() {
 		return ClientSettings.builder().build();
@@ -140,6 +145,7 @@ public class AuthorizationServerConfig {
 		return AuthorizationServerSettings.builder().build();
 	}
 
+	// faz algumas configurações de token
 	@Bean
 	public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator() {
 		NimbusJwtEncoder jwtEncoder = new NimbusJwtEncoder(jwkSource());
@@ -149,6 +155,8 @@ public class AuthorizationServerConfig {
 		return new DelegatingOAuth2TokenGenerator(jwtGenerator, accessTokenGenerator);
 	}
 
+	// customiza o token
+	// claim = reinvidicação
 	@Bean
 	public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
 		return context -> {
@@ -158,6 +166,7 @@ public class AuthorizationServerConfig {
 			if (context.getTokenType().getValue().equals("access_token")) {
 				// @formatter:off
 				context.getClaims()
+						// .claim("nome", "Gustavo") caso queira customizar, podemos
 					.claim("authorities", authorities)
 					.claim("username", user.getUsername());
 				// @formatter:on
@@ -165,11 +174,13 @@ public class AuthorizationServerConfig {
 		};
 	}
 
+	// decodificador do token
 	@Bean
 	public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
 		return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
 	}
 
+	// faz a configuração do algoritmo do RSA para gerar a chave para embaralhar junto com o token, fazendo com que o token seja seguro
 	@Bean
 	public JWKSource<SecurityContext> jwkSource() {
 		RSAKey rsaKey = generateRsa();
