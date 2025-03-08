@@ -97,6 +97,10 @@ public class Usuario implements UserDetails {
         return pedidos;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
     public void addRole(Role role) {
         roles.add(role);
     }
@@ -116,7 +120,6 @@ public class Usuario implements UserDetails {
         Usuario usuario = (Usuario) o;
         return Objects.equals(id, usuario.id);
     }
-
 
     @Override
     public int hashCode() {
