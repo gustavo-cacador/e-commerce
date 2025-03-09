@@ -1,7 +1,9 @@
 package br.com.gustavo.ecommerce.services;
 
+import br.com.gustavo.ecommerce.dto.CategoriaDTO;
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
 import br.com.gustavo.ecommerce.dto.ProdutoMinDTO;
+import br.com.gustavo.ecommerce.entities.Categoria;
 import br.com.gustavo.ecommerce.entities.Produto;
 import br.com.gustavo.ecommerce.repositories.ProdutoRepository;
 import br.com.gustavo.ecommerce.services.exceptions.DatabaseException;
@@ -93,6 +95,13 @@ public class ProdutoService {
         entity.setDescricao(dto.getDescricao());
         entity.setPreco(dto.getPreco());
         entity.setImgUrl(dto.getImgUrl());
-    }
 
+        // limpamos as categorias relacionadas aos produtos e depois atualizamos as categorias
+        entity.getCategorias().clear();
+        for (CategoriaDTO categoriaDTO : dto.getCategorias()) {
+            Categoria categoria = new Categoria();
+            categoria.setId(categoriaDTO.getId());
+            entity.getCategorias().add(categoria);
+        }
+    }
 }

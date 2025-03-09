@@ -1,10 +1,15 @@
 package br.com.gustavo.ecommerce.dto;
 
+import br.com.gustavo.ecommerce.entities.Categoria;
 import br.com.gustavo.ecommerce.entities.Produto;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProdutoDTO {
 
@@ -23,6 +28,10 @@ public class ProdutoDTO {
 
     private String imgUrl;
 
+    // criando a relação para mostrar as categorias dos produtos
+    @NotEmpty(message = "Deve ter pelo menos uma categoria")
+    private List<CategoriaDTO> categorias = new ArrayList<>();
+
     public ProdutoDTO() {
     }
 
@@ -40,6 +49,9 @@ public class ProdutoDTO {
         descricao = entity.getDescricao();
         preco = entity.getPreco();
         imgUrl = entity.getImgUrl();
+        for (Categoria categoria : entity.getCategorias()) {
+            categorias.add(new CategoriaDTO(categoria));
+        }
     }
 
     public Long getId() {
@@ -60,5 +72,9 @@ public class ProdutoDTO {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoriaDTO> getCategorias() {
+        return categorias;
     }
 }
