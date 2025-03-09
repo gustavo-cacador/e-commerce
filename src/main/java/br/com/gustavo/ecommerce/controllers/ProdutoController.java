@@ -2,6 +2,7 @@ package br.com.gustavo.ecommerce.controllers;
 
 
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
+import br.com.gustavo.ecommerce.dto.ProdutoMinDTO;
 import br.com.gustavo.ecommerce.services.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,27 @@ public class ProdutoController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping
+    public ResponseEntity<Page<ProdutoMinDTO>> findAll(@RequestParam(name = "nome", defaultValue = "") String nome, Pageable pageable) {
+        Page<ProdutoMinDTO> dto = produtoService.findAll(nome, pageable);
+        return ResponseEntity.ok(dto);
+    }
+
     // Para buscar todos os produtos da lista
     /*
     @GetMapping
     public List<ProdutoDTO> buscarTodos() {
         return produtoService.buscarTodos();
     }
-     */
+
 
     @GetMapping
     public ResponseEntity<Page<ProdutoDTO>> findAll(@RequestParam(name = "nome", defaultValue = "") String nome, Pageable pageable) {
         Page<ProdutoDTO> dto = produtoService.findAll(nome, pageable);
         return ResponseEntity.ok(dto);
     }
+
+     */
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping

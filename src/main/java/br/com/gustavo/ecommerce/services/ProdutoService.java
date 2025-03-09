@@ -1,6 +1,7 @@
 package br.com.gustavo.ecommerce.services;
 
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
+import br.com.gustavo.ecommerce.dto.ProdutoMinDTO;
 import br.com.gustavo.ecommerce.entities.Produto;
 import br.com.gustavo.ecommerce.repositories.ProdutoRepository;
 import br.com.gustavo.ecommerce.services.exceptions.DatabaseException;
@@ -41,12 +42,18 @@ public class ProdutoService {
                 .map(x -> new ProdutoDTO(x))
                 .toList();
     }
-     */
 
     @Transactional(readOnly = true)
     public Page<ProdutoDTO> findAll(String nome, Pageable pageable) {
         Page<Produto> result = produtoRepository.searchByName(nome, pageable);
         return result.map(x -> new ProdutoDTO(x));
+    }
+     */
+
+    @Transactional(readOnly = true)
+    public Page<ProdutoMinDTO> findAll(String nome, Pageable pageable) {
+        Page<Produto> result = produtoRepository.searchByName(nome, pageable);
+        return result.map(x -> new ProdutoMinDTO(x));
     }
 
     @Transactional
