@@ -105,7 +105,7 @@ public class Usuario implements UserDetails {
         roles.add(role);
     }
 
-    // verifica se usuario logado tem autoridade para tais funções
+    // verifica se usuario logado tem autoridade para visualizar pedido
     public boolean hasRole(String roleName) {
         for (Role role : roles) {
             if (role.getAuthority().equals(roleName)) {
