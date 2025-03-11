@@ -4,7 +4,7 @@ import br.com.gustavo.ecommerce.entities.ItemPedido;
 
 public class ItemPedidoDTO {
 
-    private Long id;
+    private Long produtoId;
     private String nome;
     private Double preco;
     private Integer quantidade;
@@ -12,22 +12,22 @@ public class ItemPedidoDTO {
     public ItemPedidoDTO() {
     }
 
-    public ItemPedidoDTO(Long id, String nome, Double preco, Integer quantidade) {
-        this.id = id;
+    public ItemPedidoDTO(Long produtoId, String nome, Double preco, Integer quantidade) {
+        this.produtoId = produtoId;
         this.nome = nome;
         this.preco = preco;
         this.quantidade = quantidade;
     }
 
     public ItemPedidoDTO(ItemPedido entity) {
-        id = entity.getProduto().getId();
+        produtoId = entity.getProduto().getId();
         nome = entity.getProduto().getNome();
-        preco = entity.getProduto().getPreco();
+        preco = entity.getPreco();
         quantidade = entity.getQuantidade();
     }
 
-    public Long getId() {
-        return id;
+    public Long getProdutoId() {
+        return produtoId;
     }
 
     public String getNome() {

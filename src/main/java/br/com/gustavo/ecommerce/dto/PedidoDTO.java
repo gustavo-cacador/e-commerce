@@ -3,6 +3,7 @@ package br.com.gustavo.ecommerce.dto;
 import br.com.gustavo.ecommerce.entities.ItemPedido;
 import br.com.gustavo.ecommerce.entities.Pedido;
 import br.com.gustavo.ecommerce.entities.PedidoStatus;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class PedidoDTO {
 
     private PagamentoDTO pagamento;
 
+    // criando a relação para mostrar as categorias dos produtos
+    @NotEmpty(message = "Deve ter pelo menos um item")
     private List<ItemPedidoDTO> itens = new ArrayList<>();
 
     public PedidoDTO() {

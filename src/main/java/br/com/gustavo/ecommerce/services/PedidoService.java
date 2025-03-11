@@ -1,15 +1,19 @@
 package br.com.gustavo.ecommerce.services;
 
+import br.com.gustavo.ecommerce.dto.ItemPedidoDTO;
 import br.com.gustavo.ecommerce.dto.PedidoDTO;
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
-import br.com.gustavo.ecommerce.entities.Pedido;
-import br.com.gustavo.ecommerce.entities.Produto;
+import br.com.gustavo.ecommerce.entities.*;
+import br.com.gustavo.ecommerce.repositories.ItemPedidoRepository;
 import br.com.gustavo.ecommerce.repositories.PedidoRepository;
 import br.com.gustavo.ecommerce.repositories.ProdutoRepository;
 import br.com.gustavo.ecommerce.services.exceptions.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class PedidoService {
@@ -17,10 +21,41 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Transactional(readOnly = true)
     public PedidoDTO findById(Long id) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Pedido com id: " + id + ", não encontrado."));
+        return new PedidoDTO(pedido);
+    }
+
+    @Transactional
+    public PedidoDTO insert(PedidoDTO dto) {
+
+        Pedido pedido = new Pedido();
+        pedido.setMomento(Instant.now());
+        pedido.setStatus(PedidoStatus.AGUARDANDO_PAGAMENTO);
+
+        Usuario usuario = usuarioService.authenticated();
+        pedido.setCliente(usuario);
+
+        for (ItemPedidoDTO itemPedidoDTO : dto.getItens()) {
+            Produto produto = produtoRepository.getReferenceById(itemPedidoDTO.getProdutoId());
+            ItemPedido item = new ItemPedido(pedido, produto, itemPedidoDTO.getQuantidade(), produto.getPreco());
+            pedido.getItems().add(item);
+        }
+
+        pedidoRepository.save(pedido);
+        itemPedidoRepository.saveAll(pedido.getItems());
+
         return new PedidoDTO(pedido);
     }
 }
