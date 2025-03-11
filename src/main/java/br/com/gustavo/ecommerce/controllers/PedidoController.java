@@ -21,7 +21,7 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<PedidoDTO> findById(@PathVariable Long id) {
         PedidoDTO dto = pedidoService.findById(id);

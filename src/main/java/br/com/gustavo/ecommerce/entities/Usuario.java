@@ -27,7 +27,7 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>(); // geramos apenas o get com List, nunca um set
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -105,6 +105,7 @@ public class Usuario implements UserDetails {
         roles.add(role);
     }
 
+    // verifica se usuario logado tem autoridade para tais funções
     public boolean hasRole(String roleName) {
         for (Role role : roles) {
             if (role.getAuthority().equals(roleName)) {

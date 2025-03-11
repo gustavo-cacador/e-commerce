@@ -30,10 +30,15 @@ public class PedidoService {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public PedidoDTO findById(Long id) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Pedido com id: " + id + ", não encontrado."));
+        // testa se esse usuario eh o dono do pedido ou admin para autorizar para visualizar o pedido
+        authService.validateSelfOrAdmin(pedido.getCliente().getId());
         return new PedidoDTO(pedido);
     }
 
