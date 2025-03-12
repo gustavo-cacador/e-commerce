@@ -3,10 +3,7 @@ package br.com.gustavo.ecommerce.dto;
 import br.com.gustavo.ecommerce.entities.Categoria;
 import br.com.gustavo.ecommerce.entities.Produto;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +20,14 @@ public class ProdutoDTO {
     @NotBlank(message = "Campo requerido")
     private String descricao;
 
+    @NotNull(message = "Campo requerido")
     @Positive(message = "O preço precisa ser positivo")
     private Double preco;
 
     private String imgUrl;
 
     // criando a relação para mostrar as categorias dos produtos
+    // categoria não deve ser vazia
     @NotEmpty(message = "Deve ter pelo menos uma categoria")
     private List<CategoriaDTO> categorias = new ArrayList<>();
 
