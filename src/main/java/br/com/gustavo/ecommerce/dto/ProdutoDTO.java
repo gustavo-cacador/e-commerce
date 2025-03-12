@@ -49,6 +49,8 @@ public class ProdutoDTO {
         descricao = entity.getDescricao();
         preco = entity.getPreco();
         imgUrl = entity.getImgUrl();
+
+        // inserindo categorias nos produtos
         for (Categoria categoria : entity.getCategorias()) {
             categorias.add(new CategoriaDTO(categoria));
         }

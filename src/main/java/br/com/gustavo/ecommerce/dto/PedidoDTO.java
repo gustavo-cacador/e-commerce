@@ -40,6 +40,8 @@ public class PedidoDTO {
         this.status = entity.getStatus();
         this.cliente = new ClienteDTO(entity.getCliente());
         this.pagamento = (entity.getPagamento() == null) ? null : new PagamentoDTO(entity.getPagamento());
+
+        // para cada ItemPedido, vou pegar o "getItems" da entidade Pedido, e vou instanciar um ItemPedidoDTO, para assim adicionar itens no meu itemDto (ItemPedidoDTO)
         for (ItemPedido item : entity.getItems()) {
             ItemPedidoDTO itemDto = new ItemPedidoDTO(item);
             itens.add(itemDto);

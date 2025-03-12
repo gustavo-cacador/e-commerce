@@ -24,6 +24,8 @@ public class UsuarioDTO {
         email = entity.getEmail();
         telefone = entity.getTelefone();
         dataNascimento = entity.getDataNascimento();
+
+        // obtendo autoridade ou permissao para um usuario
         for (GrantedAuthority role: entity.getRoles()) {
             roles.add(role.getAuthority());
         }
