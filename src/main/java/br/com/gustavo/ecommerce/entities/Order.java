@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_pedido")
-public class Pedido {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Pedido {
     @OneToMany(mappedBy = "id.pedido")
     private Set<ItemPedido> items = new HashSet<>();
 
-    public Pedido() {
+    public Order() {
     }
 
-    public Pedido(Long id, Instant momento, PedidoStatus status, Usuario cliente, Pagamento pagamento) {
+    public Order(Long id, Instant momento, PedidoStatus status, Usuario cliente, Pagamento pagamento) {
         this.id = id;
         this.momento = momento;
         this.status = status;
@@ -88,14 +88,14 @@ public class Pedido {
         return items;
     }
 
-    public List<Produto> getProdutos() {
+    public List<Product> getProdutos() {
         return items.stream().map(x -> x.getProduto()).toList();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Pedido pedido = (Pedido) o;
+        Order pedido = (Order) o;
         return Objects.equals(id, pedido.id);
     }
 

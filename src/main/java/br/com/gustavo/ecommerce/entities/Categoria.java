@@ -16,7 +16,7 @@ public class Categoria {
     private String nome;
 
     @ManyToMany(mappedBy = "categorias")
-    private Set<Produto> produtos = new HashSet<>(); // Como Categoria e Produto é um relacionamento muito pra muitos, aqui nós utilizamos um Set ao invés do List, para n repetir produto_id e categoria_id
+    private Set<Product> produtos = new HashSet<>(); // Como Categoria e Produto é um relacionamento muito pra muitos, aqui nós utilizamos um Set ao invés do List, para n repetir produto_id e categoria_id
 
 
     public Categoria() {
@@ -43,7 +43,7 @@ public class Categoria {
         this.nome = nome;
     }
 
-    public Set<Produto> getProdutos() {
+    public Set<Product> getProdutos() {
         return produtos;
     }
 

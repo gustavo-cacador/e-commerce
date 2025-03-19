@@ -9,12 +9,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_produto")
-public class Produto {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
 
     @Column(columnDefinition = "TEXT")
     private String descricao;
@@ -32,12 +32,12 @@ public class Produto {
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> items = new HashSet<>();
 
-    public Produto() {
+    public Product() {
     }
 
-    public Produto(Long id, String nome, String descricao, Double preco, String imgUrl) {
+    public Product(Long id, String name, String descricao, Double preco, String imgUrl) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
         this.descricao = descricao;
         this.preco = preco;
         this.imgUrl = imgUrl;
@@ -52,11 +52,11 @@ public class Produto {
     }
 
     public String getNome() {
-        return nome;
+        return name;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.name = name;
     }
 
     public String getDescricao() {
@@ -91,14 +91,14 @@ public class Produto {
         return items;
     }
 
-    public List<Pedido> getPedidos() {
+    public List<Order> getPedidos() {
         return items.stream().map(x -> x.getPedido()).toList();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
+        Product produto = (Product) o;
         return Objects.equals(id, produto.id);
     }
 

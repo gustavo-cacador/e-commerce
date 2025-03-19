@@ -15,7 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/pedidos")
+@RequestMapping(value = "/orders")
 public class PedidoController {
 
     @Autowired

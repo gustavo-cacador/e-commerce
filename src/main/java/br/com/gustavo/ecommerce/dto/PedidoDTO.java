@@ -1,7 +1,7 @@
 package br.com.gustavo.ecommerce.dto;
 
 import br.com.gustavo.ecommerce.entities.ItemPedido;
-import br.com.gustavo.ecommerce.entities.Pedido;
+import br.com.gustavo.ecommerce.entities.Order;
 import br.com.gustavo.ecommerce.entities.PedidoStatus;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -34,7 +34,7 @@ public class PedidoDTO {
         this.pagamento = pagamento;
     }
 
-    public PedidoDTO(Pedido entity) {
+    public PedidoDTO(Order entity) {
         this.id = entity.getId();
         this.momento = entity.getMomento();
         this.status = entity.getStatus();

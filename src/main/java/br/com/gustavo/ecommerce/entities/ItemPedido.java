@@ -19,26 +19,26 @@ public class ItemPedido {
     public ItemPedido() {
     }
 
-    public ItemPedido(Pedido pedido, Produto produto, Integer quantidade, Double preco) {
+    public ItemPedido(Order pedido, Product produto, Integer quantidade, Double preco) {
         id.setPedido(pedido);
         id.setProduto(produto);
         this.quantidade = quantidade;
         this.preco = preco;
     }
 
-    public Pedido getPedido() {
+    public Order getPedido() {
         return id.getPedido();
     }
 
-    public void setPedido(Pedido pedido) {
+    public void setPedido(Order pedido) {
         id.setPedido(pedido);
     }
 
-    public Produto getProduto() {
+    public Product getProduto() {
         return id.getProduto();
     }
 
-    public void setProduto(Produto produto) {
+    public void setProduto(Product produto) {
         id.setProduto(produto);
     }
 

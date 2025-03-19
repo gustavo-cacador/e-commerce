@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/produtos")
+@RequestMapping(value = "/products")
 public class ProdutoController {
 
     @Autowired
@@ -30,8 +30,8 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProdutoMinDTO>> findAll(@RequestParam(name = "nome", defaultValue = "") String nome, Pageable pageable) {
-        Page<ProdutoMinDTO> dto = produtoService.findAll(nome, pageable);
+    public ResponseEntity<Page<ProdutoMinDTO>> findAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
+        Page<ProdutoMinDTO> dto = produtoService.findAll(name, pageable);
         return ResponseEntity.ok(dto);
     }
 

@@ -19,12 +19,12 @@ public class Pagamento {
 
     @OneToOne
     @MapsId
-    private Pedido pedido; // O id que vai gerar do Pagamento é o mesmo id do pedido_id
+    private Order pedido; // O id que vai gerar do Pagamento é o mesmo id do pedido_id
 
     public Pagamento() {
     }
 
-    public Pagamento(Long id, Instant momento, Pedido pedido) {
+    public Pagamento(Long id, Instant momento, Order pedido) {
         this.id = id;
         this.momento = momento;
         this.pedido = pedido;
@@ -46,11 +46,11 @@ public class Pagamento {
         this.momento = momento;
     }
 
-    public Pedido getPedido() {
+    public Order getPedido() {
         return pedido;
     }
 
-    public void setPedido(Pedido pedido) {
+    public void setPedido(Order pedido) {
         this.pedido = pedido;
     }
 

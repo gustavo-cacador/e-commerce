@@ -25,7 +25,7 @@ public class Usuario implements UserDetails {
 
     // Um Usuário pode ter vários Pedidos
     @OneToMany(mappedBy = "cliente")
-    private List<Pedido> pedidos = new ArrayList<>(); // geramos apenas o get com List, nunca um set
+    private List<Order> pedidos = new ArrayList<>(); // geramos apenas o get com List, nunca um set
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
@@ -93,7 +93,7 @@ public class Usuario implements UserDetails {
         this.senha = senha;
     }
 
-    public List<Pedido> getPedidos() {
+    public List<Order> getPedidos() {
         return pedidos;
     }
 

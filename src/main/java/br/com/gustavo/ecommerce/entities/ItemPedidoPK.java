@@ -11,28 +11,28 @@ public class ItemPedidoPK {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    private Order pedido;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    private Produto produto;
+    private Product produto;
 
     public ItemPedidoPK() {
     }
 
-    public Pedido getPedido() {
+    public Order getPedido() {
         return pedido;
     }
 
-    public void setPedido(Pedido pedido) {
+    public void setPedido(Order pedido) {
         this.pedido = pedido;
     }
 
-    public Produto getProduto() {
+    public Product getProduto() {
         return produto;
     }
 
-    public void setProduto(Produto produto) {
+    public void setProduto(Product produto) {
         this.produto = produto;
     }
 

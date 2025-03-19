@@ -1,8 +1,7 @@
 package br.com.gustavo.ecommerce.dto;
 
 import br.com.gustavo.ecommerce.entities.Categoria;
-import br.com.gustavo.ecommerce.entities.Produto;
-import jakarta.persistence.Column;
+import br.com.gustavo.ecommerce.entities.Product;
 import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class ProdutoDTO {
         this.imgUrl = imgUrl;
     }
 
-    public ProdutoDTO(Produto entity) {
+    public ProdutoDTO(Product entity) {
         id = entity.getId();
         nome = entity.getNome();
         descricao = entity.getDescricao();

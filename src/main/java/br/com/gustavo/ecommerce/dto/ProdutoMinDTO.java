@@ -1,10 +1,6 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.Produto;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import br.com.gustavo.ecommerce.entities.Product;
 
 public class ProdutoMinDTO {
 
@@ -23,7 +19,7 @@ public class ProdutoMinDTO {
         this.imgUrl = imgUrl;
     }
 
-    public ProdutoMinDTO(Produto entity) {
+    public ProdutoMinDTO(Product entity) {
         id = entity.getId();
         nome = entity.getNome();
         preco = entity.getPreco();

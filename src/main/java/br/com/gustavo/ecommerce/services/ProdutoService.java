@@ -4,7 +4,7 @@ import br.com.gustavo.ecommerce.dto.CategoriaDTO;
 import br.com.gustavo.ecommerce.dto.ProdutoDTO;
 import br.com.gustavo.ecommerce.dto.ProdutoMinDTO;
 import br.com.gustavo.ecommerce.entities.Categoria;
-import br.com.gustavo.ecommerce.entities.Produto;
+import br.com.gustavo.ecommerce.entities.Product;
 import br.com.gustavo.ecommerce.repositories.ProdutoRepository;
 import br.com.gustavo.ecommerce.services.exceptions.DatabaseException;
 import br.com.gustavo.ecommerce.services.exceptions.ResourceNotFoundException;
@@ -17,10 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.parser.Entity;
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class ProdutoService {
 
@@ -29,7 +25,7 @@ public class ProdutoService {
 
     @Transactional(readOnly = true)
     public ProdutoDTO findById(Long id) {
-        Produto produto = produtoRepository.findById(id).orElseThrow(
+        Product produto = produtoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Produto com id: " + id + ", não encontrado."));
         return new ProdutoDTO(produto);
     }
@@ -53,14 +49,14 @@ public class ProdutoService {
      */
 
     @Transactional(readOnly = true)
-    public Page<ProdutoMinDTO> findAll(String nome, Pageable pageable) {
-        Page<Produto> result = produtoRepository.searchByName(nome, pageable);
+    public Page<ProdutoMinDTO> findAll(String name, Pageable pageable) {
+        Page<Product> result = produtoRepository.searchByName(name, pageable);
         return result.map(x -> new ProdutoMinDTO(x));
     }
 
     @Transactional
     public ProdutoDTO insert(ProdutoDTO dto) {
-        Produto entity = new Produto();
+        Product entity = new Product();
         copyDtoToEntity(dto, entity);
         entity = produtoRepository.save(entity);
         return new ProdutoDTO(entity);
@@ -69,7 +65,7 @@ public class ProdutoService {
     @Transactional
     public ProdutoDTO update(Long id, ProdutoDTO dto) {
         try {
-            Produto entity = produtoRepository.getReferenceById(id);
+            Product entity = produtoRepository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
             entity = produtoRepository.save(entity);
             return new ProdutoDTO(entity);
@@ -90,7 +86,7 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-    private void copyDtoToEntity(ProdutoDTO dto, Produto entity) {
+    private void copyDtoToEntity(ProdutoDTO dto, Product entity) {
         entity.setNome(dto.getNome());
         entity.setDescricao(dto.getDescricao());
         entity.setPreco(dto.getPreco());
