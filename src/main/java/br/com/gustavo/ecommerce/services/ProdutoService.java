@@ -87,9 +87,9 @@ public class ProdutoService {
     }
 
     private void copyDtoToEntity(ProdutoDTO dto, Product entity) {
-        entity.setName(dto.getNome());
-        entity.setDescricao(dto.getDescricao());
-        entity.setPreco(dto.getPreco());
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
 
         // limpamos as categorias relacionadas aos produtos e depois atualizamos as categorias

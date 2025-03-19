@@ -52,7 +52,7 @@ public class PedidoService {
 
         for (ItemPedidoDTO itemPedidoDTO : dto.getItens()) {
             Product produto = produtoRepository.getReferenceById(itemPedidoDTO.getProdutoId());
-            ItemPedido item = new ItemPedido(pedido, produto, itemPedidoDTO.getQuantidade(), produto.getPreco());
+            ItemPedido item = new ItemPedido(pedido, produto, itemPedidoDTO.getQuantidade(), produto.getPrice());
             pedido.getItems().add(item);
         }
 

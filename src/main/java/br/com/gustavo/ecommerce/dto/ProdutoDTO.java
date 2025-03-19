@@ -13,15 +13,15 @@ public class ProdutoDTO {
 
     @Size(min = 3, max = 80, message = "Nome precisa ter de 3 a 80 caracteres")
     @NotBlank(message = "Campo requerido")
-    private String nome;
+    private String name;
 
     @Size(min = 10, message = "Descrição precisa ter no mínimo 10 caracteres")
     @NotBlank(message = "Campo requerido")
-    private String descricao;
+    private String description;
 
     @NotNull(message = "Campo requerido")
     @Positive(message = "O preço precisa ser positivo")
-    private Double preco;
+    private Double price;
 
     private String imgUrl;
 
@@ -33,19 +33,19 @@ public class ProdutoDTO {
     public ProdutoDTO() {
     }
 
-    public ProdutoDTO(Long id, String nome, String descricao, Double preco, String imgUrl) {
+    public ProdutoDTO(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
+        this.name = name;
+        this.description = description;
+        this.price = price;
         this.imgUrl = imgUrl;
     }
 
     public ProdutoDTO(Product entity) {
         id = entity.getId();
-        nome = entity.getName();
-        descricao = entity.getDescricao();
-        preco = entity.getPreco();
+        name = entity.getName();
+        description = entity.getDescription();
+        price = entity.getPrice();
         imgUrl = entity.getImgUrl();
 
         // inserindo categorias nos produtos
@@ -58,16 +58,16 @@ public class ProdutoDTO {
         return id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public Double getPreco() {
-        return preco;
+    public Double getPrice() {
+        return price;
     }
 
     public String getImgUrl() {

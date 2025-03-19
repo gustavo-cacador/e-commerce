@@ -5,24 +5,24 @@ import br.com.gustavo.ecommerce.entities.Product;
 public class ProdutoMinDTO {
 
     private Long id;
-    private String nome;
-    private Double preco;
+    private String name;
+    private Double price;
     private String imgUrl;
 
     public ProdutoMinDTO() {
     }
 
-    public ProdutoMinDTO(Long id, String nome, Double preco, String imgUrl) {
+    public ProdutoMinDTO(Long id, String name, Double price, String imgUrl) {
         this.id = id;
-        this.nome = nome;
-        this.preco = preco;
+        this.name = name;
+        this.price = price;
         this.imgUrl = imgUrl;
     }
 
     public ProdutoMinDTO(Product entity) {
         id = entity.getId();
-        nome = entity.getName();
-        preco = entity.getPreco();
+        name = entity.getName();
+        price = entity.getPrice();
         imgUrl = entity.getImgUrl();
     }
 
@@ -30,12 +30,12 @@ public class ProdutoMinDTO {
         return id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public Double getPreco() {
-        return preco;
+    public Double getPrice() {
+        return price;
     }
 
     public String getImgUrl() {
