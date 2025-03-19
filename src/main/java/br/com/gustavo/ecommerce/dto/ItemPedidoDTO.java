@@ -23,7 +23,7 @@ public class ItemPedidoDTO {
 
     public ItemPedidoDTO(ItemPedido entity) {
         produtoId = entity.getProduto().getId();
-        nome = entity.getProduto().getNome();
+        nome = entity.getProduto().getName();
         preco = entity.getPreco();
         quantidade = entity.getQuantidade();
         imgUrl = entity.getProduto().getImgUrl();

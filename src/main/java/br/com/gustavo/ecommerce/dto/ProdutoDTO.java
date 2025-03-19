@@ -43,7 +43,7 @@ public class ProdutoDTO {
 
     public ProdutoDTO(Product entity) {
         id = entity.getId();
-        nome = entity.getNome();
+        nome = entity.getName();
         descricao = entity.getDescricao();
         preco = entity.getPreco();
         imgUrl = entity.getImgUrl();

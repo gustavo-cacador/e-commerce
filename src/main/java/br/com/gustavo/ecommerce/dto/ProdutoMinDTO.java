@@ -21,7 +21,7 @@ public class ProdutoMinDTO {
 
     public ProdutoMinDTO(Product entity) {
         id = entity.getId();
-        nome = entity.getNome();
+        nome = entity.getName();
         preco = entity.getPreco();
         imgUrl = entity.getImgUrl();
     }
