@@ -93,11 +93,11 @@ public class ProdutoService {
         entity.setImgUrl(dto.getImgUrl());
 
         // limpamos as categorias relacionadas aos produtos e depois atualizamos as categorias
-        entity.getCategorias().clear();
-        for (CategoriaDTO categoriaDTO : dto.getCategorias()) {
+        entity.getCategories().clear();
+        for (CategoriaDTO categoriaDTO : dto.getCategories()) {
             Categoria categoria = new Categoria();
             categoria.setId(categoriaDTO.getId());
-            entity.getCategorias().add(categoria);
+            entity.getCategories().add(categoria);
         }
     }
 }

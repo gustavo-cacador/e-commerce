@@ -27,7 +27,7 @@ public class Product {
     @JoinTable(name = "tb_produto_categoria",
             joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-    private Set<Categoria> categorias = new HashSet<>(); // Como Categoria e Produto é um relacionamento muito pra muitos, aqui nós utilizamos um Set ao invés do List, para n repetir produto_id e categoria_id
+    private Set<Categoria> categories = new HashSet<>(); // Como Categoria e Produto é um relacionamento muito pra muitos, aqui nós utilizamos um Set ao invés do List, para n repetir produto_id e categoria_id
 
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> items = new HashSet<>();
@@ -83,8 +83,8 @@ public class Product {
         this.imgUrl = imgUrl;
     }
 
-    public Set<Categoria> getCategorias() {
-        return categorias;
+    public Set<Categoria> getCategories() {
+        return categories;
     }
 
     public Set<ItemPedido> getItems() {

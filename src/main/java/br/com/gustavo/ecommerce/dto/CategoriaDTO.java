@@ -5,27 +5,27 @@ import br.com.gustavo.ecommerce.entities.Categoria;
 public class CategoriaDTO {
 
     private Long id;
-    private String nome;
+    private String name;
 
     public CategoriaDTO() {
 
     }
 
-    public CategoriaDTO(Long id, String nome) {
+    public CategoriaDTO(Long id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
 
     public CategoriaDTO(Categoria entity) {
         id = entity.getId();
-        nome = entity.getNome();
+        name = entity.getName();
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 }

@@ -13,18 +13,18 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
 
-    @ManyToMany(mappedBy = "categorias")
+    @ManyToMany(mappedBy = "categories")
     private Set<Product> produtos = new HashSet<>(); // Como Categoria e Produto é um relacionamento muito pra muitos, aqui nós utilizamos um Set ao invés do List, para n repetir produto_id e categoria_id
 
 
     public Categoria() {
     }
 
-    public Categoria(Long id, String nome) {
+    public Categoria(Long id, String name) {
         this.id = id;
-        this.nome = nome;
+        this.name = name;
     }
 
     public Long getId() {
@@ -35,12 +35,12 @@ public class Categoria {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Product> getProdutos() {

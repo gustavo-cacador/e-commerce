@@ -1,6 +1,6 @@
-INSERT INTO tb_categoria (nome) VALUES ('Livros');
-INSERT INTO tb_categoria (nome) VALUES ('Eletrônicos');
-INSERT INTO tb_categoria (nome) VALUES ('Computadores');
+INSERT INTO tb_categoria (name) VALUES ('Livros');
+INSERT INTO tb_categoria (name) VALUES ('Eletrônicos');
+INSERT INTO tb_categoria (name) VALUES ('Computadores');
 
 INSERT INTO tb_produto (name, price, description, img_url) VALUES ('The Lord of the Rings', 90.5, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg');
 INSERT INTO tb_produto (name, price, description, img_url) VALUES ('Smart TV', 2190.0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/2-big.jpg');
@@ -70,10 +70,10 @@ INSERT INTO tb_pedido (momento, status, client_id) VALUES (TIMESTAMP WITH TIME Z
 INSERT INTO tb_pedido (momento, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-29T15:50:00Z', 3, 2);
 INSERT INTO tb_pedido (momento, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-08-03T14:20:00Z', 0, 1);
 
-INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 1, 2, 90.5);
-INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (1, 3, 1, 1250.0);
-INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (2, 3, 1, 1250.0);
-INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade, preco) VALUES (3, 1, 1, 90.5);
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantity, price) VALUES (1, 1, 2, 90.5);
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantity, price) VALUES (1, 3, 1, 1250.0);
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantity, price) VALUES (2, 3, 1, 1250.0);
+INSERT INTO tb_item_pedido (pedido_id, produto_id, quantity, price) VALUES (3, 1, 1, 90.5);
 
 INSERT INTO tb_pagamento (pedido_id, momento) VALUES (1, TIMESTAMP WITH TIME ZONE '2022-07-25T15:00:00Z');
 INSERT INTO tb_pagamento (pedido_id, momento) VALUES (2, TIMESTAMP WITH TIME ZONE '2022-07-30T11:00:00Z');

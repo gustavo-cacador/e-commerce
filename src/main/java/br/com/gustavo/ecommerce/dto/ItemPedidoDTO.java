@@ -6,26 +6,26 @@ public class ItemPedidoDTO {
 
     private Long produtoId;
     private String nome;
-    private Double preco;
-    private Integer quantidade;
+    private Double price;
+    private Integer quantity;
     private String imgUrl;
 
     public ItemPedidoDTO() {
     }
 
-    public ItemPedidoDTO(Long produtoId, String nome, Double preco, Integer quantidade, String imgUrl) {
+    public ItemPedidoDTO(Long produtoId, String nome, Double price, Integer quantity, String imgUrl) {
         this.produtoId = produtoId;
         this.nome = nome;
-        this.preco = preco;
-        this.quantidade = quantidade;
+        this.price = price;
+        this.quantity = quantity;
         this.imgUrl = imgUrl;
     }
 
     public ItemPedidoDTO(ItemPedido entity) {
         produtoId = entity.getProduto().getId();
         nome = entity.getProduto().getName();
-        preco = entity.getPreco();
-        quantidade = entity.getQuantidade();
+        price = entity.getPrice();
+        quantity = entity.getQuantity();
         imgUrl = entity.getProduto().getImgUrl();
     }
 
@@ -37,12 +37,12 @@ public class ItemPedidoDTO {
         return nome;
     }
 
-    public Double getPreco() {
-        return preco;
+    public Double getPrice() {
+        return price;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
+    public Integer getQuantity() {
+        return quantity;
     }
 
     public String getImgUrl() {
@@ -50,6 +50,6 @@ public class ItemPedidoDTO {
     }
 
     public Double getSubTotal() {
-        return preco * quantidade;
+        return price * quantity;
     }
 }

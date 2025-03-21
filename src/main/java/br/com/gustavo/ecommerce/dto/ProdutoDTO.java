@@ -28,7 +28,7 @@ public class ProdutoDTO {
     // criando a relação para mostrar as categorias dos produtos
     // categoria não deve ser vazia
     @NotEmpty(message = "Deve ter pelo menos uma categoria")
-    private List<CategoriaDTO> categorias = new ArrayList<>();
+    private List<CategoriaDTO> categories = new ArrayList<>();
 
     public ProdutoDTO() {
     }
@@ -49,8 +49,8 @@ public class ProdutoDTO {
         imgUrl = entity.getImgUrl();
 
         // inserindo categorias nos produtos
-        for (Categoria categoria : entity.getCategorias()) {
-            categorias.add(new CategoriaDTO(categoria));
+        for (Categoria categoria : entity.getCategories()) {
+            categories.add(new CategoriaDTO(categoria));
         }
     }
 
@@ -74,7 +74,7 @@ public class ProdutoDTO {
         return imgUrl;
     }
 
-    public List<CategoriaDTO> getCategorias() {
-        return categorias;
+    public List<CategoriaDTO> getCategories() {
+        return categories;
     }
 }

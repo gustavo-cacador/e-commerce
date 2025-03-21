@@ -13,17 +13,17 @@ public class ItemPedido {
     @EmbeddedId
     private ItemPedidoPK id = new ItemPedidoPK();
 
-    private Integer quantidade;
-    private Double preco;
+    private Integer quantity;
+    private Double price;
 
     public ItemPedido() {
     }
 
-    public ItemPedido(Order pedido, Product produto, Integer quantidade, Double preco) {
+    public ItemPedido(Order pedido, Product produto, Integer quantity, Double price) {
         id.setPedido(pedido);
         id.setProduto(produto);
-        this.quantidade = quantidade;
-        this.preco = preco;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public Order getPedido() {
@@ -42,20 +42,20 @@ public class ItemPedido {
         id.setProduto(produto);
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
-    public Double getPreco() {
-        return preco;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setPreco(Double preco) {
-        this.preco = preco;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Override
