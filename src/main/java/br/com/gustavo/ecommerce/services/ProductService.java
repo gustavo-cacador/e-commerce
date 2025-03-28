@@ -1,11 +1,11 @@
 package br.com.gustavo.ecommerce.services;
 
-import br.com.gustavo.ecommerce.dto.CategoriaDTO;
-import br.com.gustavo.ecommerce.dto.ProdutoDTO;
-import br.com.gustavo.ecommerce.dto.ProdutoMinDTO;
-import br.com.gustavo.ecommerce.entities.Categoria;
+import br.com.gustavo.ecommerce.dto.CategoryDTO;
+import br.com.gustavo.ecommerce.dto.ProductDTO;
+import br.com.gustavo.ecommerce.dto.ProductMinDTO;
+import br.com.gustavo.ecommerce.entities.Category;
 import br.com.gustavo.ecommerce.entities.Product;
-import br.com.gustavo.ecommerce.repositories.ProdutoRepository;
+import br.com.gustavo.ecommerce.repositories.ProductRepository;
 import br.com.gustavo.ecommerce.services.exceptions.DatabaseException;
 import br.com.gustavo.ecommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,16 +18,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProdutoService {
+public class ProductService {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public ProdutoDTO findById(Long id) {
-        Product produto = produtoRepository.findById(id).orElseThrow(
+    public ProductDTO findById(Long id) {
+        Product produto = productRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Produto com id: " + id + ", não encontrado."));
-        return new ProdutoDTO(produto);
+        return new ProductDTO(produto);
     }
 
     // Para buscar todos os produtos da lista
@@ -49,26 +49,26 @@ public class ProdutoService {
      */
 
     @Transactional(readOnly = true)
-    public Page<ProdutoMinDTO> findAll(String name, Pageable pageable) {
-        Page<Product> result = produtoRepository.searchByName(name, pageable);
-        return result.map(x -> new ProdutoMinDTO(x));
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
+        Page<Product> result = productRepository.searchByName(name, pageable);
+        return result.map(x -> new ProductMinDTO(x));
     }
 
     @Transactional
-    public ProdutoDTO insert(ProdutoDTO dto) {
+    public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
         copyDtoToEntity(dto, entity);
-        entity = produtoRepository.save(entity);
-        return new ProdutoDTO(entity);
+        entity = productRepository.save(entity);
+        return new ProductDTO(entity);
     }
 
     @Transactional
-    public ProdutoDTO update(Long id, ProdutoDTO dto) {
+    public ProductDTO update(Long id, ProductDTO dto) {
         try {
-            Product entity = produtoRepository.getReferenceById(id);
+            Product entity = productRepository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
-            entity = produtoRepository.save(entity);
-            return new ProdutoDTO(entity);
+            entity = productRepository.save(entity);
+            return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Produto com id: " + id + ", não encontrado.");
         }
@@ -76,17 +76,17 @@ public class ProdutoService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        if (!produtoRepository.existsById(id)){
+        if (!productRepository.existsById(id)){
             throw new ResourceNotFoundException("Produto com id: " + id + ", não encontrado.");
         } try {
-            produtoRepository.deleteById(id);
+            productRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
-        produtoRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 
-    private void copyDtoToEntity(ProdutoDTO dto, Product entity) {
+    private void copyDtoToEntity(ProductDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
@@ -94,9 +94,9 @@ public class ProdutoService {
 
         // limpamos as categorias relacionadas aos produtos e depois atualizamos as categorias
         entity.getCategories().clear();
-        for (CategoriaDTO categoriaDTO : dto.getCategories()) {
-            Categoria categoria = new Categoria();
-            categoria.setId(categoriaDTO.getId());
+        for (CategoryDTO categoryDTO : dto.getCategories()) {
+            Category categoria = new Category();
+            categoria.setId(categoryDTO.getId());
             entity.getCategories().add(categoria);
         }
     }

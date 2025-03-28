@@ -1,10 +1,7 @@
 package br.com.gustavo.ecommerce.controllers;
 
-import br.com.gustavo.ecommerce.dto.PedidoDTO;
-import br.com.gustavo.ecommerce.dto.ProdutoDTO;
-import br.com.gustavo.ecommerce.dto.UsuarioDTO;
-import br.com.gustavo.ecommerce.services.PedidoService;
-import br.com.gustavo.ecommerce.services.UsuarioService;
+import br.com.gustavo.ecommerce.dto.OrderDTO;
+import br.com.gustavo.ecommerce.services.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +13,22 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/orders")
-public class PedidoController {
+public class OrderController {
 
     @Autowired
-    private PedidoService pedidoService;
+    private OrderService orderService;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PedidoDTO> findById(@PathVariable Long id) {
-        PedidoDTO dto = pedidoService.findById(id);
+    public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
+        OrderDTO dto = orderService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping
-    public ResponseEntity<PedidoDTO> insert(@Valid @RequestBody PedidoDTO dto) {
-        dto = pedidoService.insert(dto);
+    public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderDTO dto) {
+        dto = orderService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);

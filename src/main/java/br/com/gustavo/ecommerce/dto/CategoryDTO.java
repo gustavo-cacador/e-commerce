@@ -1,22 +1,22 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.Categoria;
+import br.com.gustavo.ecommerce.entities.Category;
 
-public class CategoriaDTO {
+public class CategoryDTO {
 
     private Long id;
     private String name;
 
-    public CategoriaDTO() {
+    public CategoryDTO() {
 
     }
 
-    public CategoriaDTO(Long id, String name) {
+    public CategoryDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public CategoriaDTO(Categoria entity) {
+    public CategoryDTO(Category entity) {
         id = entity.getId();
         name = entity.getName();
     }

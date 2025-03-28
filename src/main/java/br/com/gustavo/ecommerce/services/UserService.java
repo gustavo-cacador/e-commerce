@@ -1,10 +1,10 @@
 package br.com.gustavo.ecommerce.services;
 
-import br.com.gustavo.ecommerce.dto.UsuarioDTO;
+import br.com.gustavo.ecommerce.dto.UserDTO;
 import br.com.gustavo.ecommerce.entities.Role;
-import br.com.gustavo.ecommerce.entities.Usuario;
-import br.com.gustavo.ecommerce.projections.UsuarioDetailsProjection;
-import br.com.gustavo.ecommerce.repositories.UsuarioRepository;
+import br.com.gustavo.ecommerce.entities.User;
+import br.com.gustavo.ecommerce.projections.UserDetailsProjection;
+import br.com.gustavo.ecommerce.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,35 +18,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        List<UsuarioDetailsProjection> result  = usuarioRepository.searchUserAndRolesByEmail(username);
+        List<UserDetailsProjection> result  = userRepository.searchUserAndRolesByEmail(username);
         if (result.size() == 0) {
             throw new UsernameNotFoundException("Email não encontrado");
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail(username);
-        usuario.setSenha(result.get(0).getSenha());
-        for (UsuarioDetailsProjection projection : result) {
-            usuario.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+        User user = new User();
+        user.setEmail(username);
+        user.setSenha(result.get(0).getSenha());
+        for (UserDetailsProjection projection : result) {
+            user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
         }
 
-        return usuario;
+        return user;
     }
 
-    protected Usuario authenticated() {
+    protected User authenticated() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
             String username = jwtPrincipal.getClaim("username");
-            return usuarioRepository.findByEmail(username).get();
+            return userRepository.findByEmail(username).get();
         }
         catch (Exception e) {
             throw new UsernameNotFoundException("Email não encontrado");
@@ -54,8 +54,8 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public UsuarioDTO getMe() {
-        Usuario usuario = authenticated();
-        return new UsuarioDTO(usuario);
+    public UserDTO getMe() {
+        User user = authenticated();
+        return new UserDTO(user);
     }
 }

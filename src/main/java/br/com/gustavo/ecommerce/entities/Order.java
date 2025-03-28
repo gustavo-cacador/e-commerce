@@ -19,29 +19,29 @@ public class Order {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant momento; // momento em que o pedido foi feito
 
-    private PedidoStatus status;
+    private OrderStatus status;
 
 
     // Muitos Pedidos para um Usuário
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Usuario cliente;
+    private User cliente;
 
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private Pagamento pagamento;
+    private Payment payment;
 
     @OneToMany(mappedBy = "id.pedido")
-    private Set<ItemPedido> items = new HashSet<>();
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
 
-    public Order(Long id, Instant momento, PedidoStatus status, Usuario cliente, Pagamento pagamento) {
+    public Order(Long id, Instant momento, OrderStatus status, User cliente, Payment payment) {
         this.id = id;
         this.momento = momento;
         this.status = status;
         this.cliente = cliente;
-        this.pagamento = pagamento;
+        this.payment = payment;
     }
 
     public Long getId() {
@@ -60,31 +60,31 @@ public class Order {
         this.momento = momento;
     }
 
-    public PedidoStatus getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PedidoStatus status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
-    public Usuario getCliente() {
+    public User getCliente() {
         return cliente;
     }
 
-    public void setCliente(Usuario cliente) {
+    public void setCliente(User cliente) {
         this.cliente = cliente;
     }
 
-    public Pagamento getPagamento() {
-        return pagamento;
+    public Payment getPagamento() {
+        return payment;
     }
 
-    public void setPagamento(Pagamento pagamento) {
-        this.pagamento = pagamento;
+    public void setPagamento(Payment payment) {
+        this.payment = payment;
     }
 
-    public Set<ItemPedido> getItems() {
+    public Set<OrderItem> getItems() {
         return items;
     }
 

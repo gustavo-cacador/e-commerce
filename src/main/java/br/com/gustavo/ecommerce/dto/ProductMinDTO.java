@@ -2,24 +2,24 @@ package br.com.gustavo.ecommerce.dto;
 
 import br.com.gustavo.ecommerce.entities.Product;
 
-public class ProdutoMinDTO {
+public class ProductMinDTO {
 
     private Long id;
     private String name;
     private Double price;
     private String imgUrl;
 
-    public ProdutoMinDTO() {
+    public ProductMinDTO() {
     }
 
-    public ProdutoMinDTO(Long id, String name, Double price, String imgUrl) {
+    public ProductMinDTO(Long id, String name, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.imgUrl = imgUrl;
     }
 
-    public ProdutoMinDTO(Product entity) {
+    public ProductMinDTO(Product entity) {
         id = entity.getId();
         name = entity.getName();
         price = entity.getPrice();

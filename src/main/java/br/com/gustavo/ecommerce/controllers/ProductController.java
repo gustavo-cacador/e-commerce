@@ -1,9 +1,9 @@
 package br.com.gustavo.ecommerce.controllers;
 
 
-import br.com.gustavo.ecommerce.dto.ProdutoDTO;
-import br.com.gustavo.ecommerce.dto.ProdutoMinDTO;
-import br.com.gustavo.ecommerce.services.ProdutoService;
+import br.com.gustavo.ecommerce.dto.ProductDTO;
+import br.com.gustavo.ecommerce.dto.ProductMinDTO;
+import br.com.gustavo.ecommerce.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,24 +14,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/products")
-public class ProdutoController {
+public class ProductController {
 
     @Autowired
-    private ProdutoService produtoService;
+    private ProductService productService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProdutoDTO> findById(@PathVariable Long id) {
-        ProdutoDTO dto = produtoService.findById(id);
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        ProductDTO dto = productService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProdutoMinDTO>> findAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
-        Page<ProdutoMinDTO> dto = produtoService.findAll(name, pageable);
+    public ResponseEntity<Page<ProductMinDTO>> findAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
+        Page<ProductMinDTO> dto = productService.findAll(name, pageable);
         return ResponseEntity.ok(dto);
     }
 
@@ -53,8 +52,8 @@ public class ProdutoController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProdutoDTO> insert(@Valid @RequestBody ProdutoDTO dto) {
-        dto = produtoService.insert(dto);
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
+        dto = productService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
@@ -62,15 +61,15 @@ public class ProdutoController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @Valid @RequestBody ProdutoDTO dto) {
-        dto = produtoService.update(id, dto);
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto) {
+        dto = productService.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        produtoService.delete(id);
+        productService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

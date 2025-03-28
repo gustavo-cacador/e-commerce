@@ -1,8 +1,8 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.ItemPedido;
+import br.com.gustavo.ecommerce.entities.OrderItem;
 
-public class ItemPedidoDTO {
+public class OrderItemDTO {
 
     private Long produtoId;
     private String nome;
@@ -10,10 +10,10 @@ public class ItemPedidoDTO {
     private Integer quantity;
     private String imgUrl;
 
-    public ItemPedidoDTO() {
+    public OrderItemDTO() {
     }
 
-    public ItemPedidoDTO(Long produtoId, String nome, Double price, Integer quantity, String imgUrl) {
+    public OrderItemDTO(Long produtoId, String nome, Double price, Integer quantity, String imgUrl) {
         this.produtoId = produtoId;
         this.nome = nome;
         this.price = price;
@@ -21,7 +21,7 @@ public class ItemPedidoDTO {
         this.imgUrl = imgUrl;
     }
 
-    public ItemPedidoDTO(ItemPedido entity) {
+    public OrderItemDTO(OrderItem entity) {
         produtoId = entity.getProduto().getId();
         nome = entity.getProduto().getName();
         price = entity.getPrice();

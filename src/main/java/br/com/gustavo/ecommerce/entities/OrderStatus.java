@@ -1,6 +1,6 @@
 package br.com.gustavo.ecommerce.entities;
 
-public enum PedidoStatus {
+public enum OrderStatus {
 
     AGUARDANDO_PAGAMENTO, PAGO, ENVIADO, ENTREGUE, CANCELADO;
 }

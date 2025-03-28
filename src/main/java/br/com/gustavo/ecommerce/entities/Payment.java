@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_pagamento")
-public class Pagamento {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class Pagamento {
     @MapsId
     private Order pedido; // O id que vai gerar do Pagamento é o mesmo id do pedido_id
 
-    public Pagamento() {
+    public Payment() {
     }
 
-    public Pagamento(Long id, Instant momento, Order pedido) {
+    public Payment(Long id, Instant momento, Order pedido) {
         this.id = id;
         this.momento = momento;
         this.pedido = pedido;
@@ -57,7 +57,7 @@ public class Pagamento {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Pagamento pagamento = (Pagamento) o;
+        Payment pagamento = (Payment) o;
         return Objects.equals(id, pagamento.id);
     }
 

@@ -1,6 +1,6 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.Usuario;
+import br.com.gustavo.ecommerce.entities.User;
 
 public class ClienteDTO {
 
@@ -15,7 +15,7 @@ public class ClienteDTO {
         this.nome = nome;
     }
 
-    public ClienteDTO(Usuario entity) {
+    public ClienteDTO(User entity) {
         id = entity.getId();
         nome = entity.getNome();
     }

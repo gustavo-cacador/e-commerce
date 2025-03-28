@@ -1,32 +1,32 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.ItemPedido;
+import br.com.gustavo.ecommerce.entities.OrderItem;
 import br.com.gustavo.ecommerce.entities.Order;
-import br.com.gustavo.ecommerce.entities.PedidoStatus;
+import br.com.gustavo.ecommerce.entities.OrderStatus;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PedidoDTO {
+public class OrderDTO {
 
     private Long id;
     private Instant momento;
-    private PedidoStatus status;
+    private OrderStatus status;
 
     private ClienteDTO cliente;
 
-    private PagamentoDTO pagamento;
+    private PaymentDTO pagamento;
 
     // criando a relação para mostrar as categorias dos produtos
     @NotEmpty(message = "Deve ter pelo menos um item")
-    private List<ItemPedidoDTO> itens = new ArrayList<>();
+    private List<OrderItemDTO> itens = new ArrayList<>();
 
-    public PedidoDTO() {
+    public OrderDTO() {
     }
 
-    public PedidoDTO(Long id, Instant momento, PedidoStatus status, ClienteDTO cliente, PagamentoDTO pagamento) {
+    public OrderDTO(Long id, Instant momento, OrderStatus status, ClienteDTO cliente, PaymentDTO pagamento) {
         this.id = id;
         this.momento = momento;
         this.status = status;
@@ -34,16 +34,16 @@ public class PedidoDTO {
         this.pagamento = pagamento;
     }
 
-    public PedidoDTO(Order entity) {
+    public OrderDTO(Order entity) {
         this.id = entity.getId();
         this.momento = entity.getMomento();
         this.status = entity.getStatus();
         this.cliente = new ClienteDTO(entity.getCliente());
-        this.pagamento = (entity.getPagamento() == null) ? null : new PagamentoDTO(entity.getPagamento());
+        this.pagamento = (entity.getPagamento() == null) ? null : new PaymentDTO(entity.getPagamento());
 
         // para cada ItemPedido, vou pegar o "getItems" da entidade Pedido, e vou instanciar um ItemPedidoDTO, para assim adicionar itens no meu itemDto (ItemPedidoDTO)
-        for (ItemPedido item : entity.getItems()) {
-            ItemPedidoDTO itemDto = new ItemPedidoDTO(item);
+        for (OrderItem item : entity.getItems()) {
+            OrderItemDTO itemDto = new OrderItemDTO(item);
             itens.add(itemDto);
         }
     }
@@ -56,7 +56,7 @@ public class PedidoDTO {
         return momento;
     }
 
-    public PedidoStatus getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
@@ -64,17 +64,17 @@ public class PedidoDTO {
         return cliente;
     }
 
-    public PagamentoDTO getPagamento() {
+    public PaymentDTO getPagamento() {
         return pagamento;
     }
 
-    public List<ItemPedidoDTO> getItens() {
+    public List<OrderItemDTO> getItens() {
         return itens;
     }
 
     public Double getTotal() {
         double sum = 0.0;
-        for (ItemPedidoDTO item : itens) {
+        for (OrderItemDTO item : itens) {
             //sum = sum + item.getSubTotal();
             sum += item.getSubTotal();
         }

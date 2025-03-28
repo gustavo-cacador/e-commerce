@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_categoria")
-public class Categoria {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,10 @@ public class Categoria {
     private Set<Product> produtos = new HashSet<>(); // Como Categoria e Produto é um relacionamento muito pra muitos, aqui nós utilizamos um Set ao invés do List, para n repetir produto_id e categoria_id
 
 
-    public Categoria() {
+    public Category() {
     }
 
-    public Categoria(Long id, String name) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -50,7 +50,7 @@ public class Categoria {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
+        Category categoria = (Category) o;
         return Objects.equals(id, categoria.id);
     }
 

@@ -1,13 +1,13 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.Categoria;
+import br.com.gustavo.ecommerce.entities.Category;
 import br.com.gustavo.ecommerce.entities.Product;
 import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDTO {
+public class ProductDTO {
 
     private Long id;
 
@@ -28,12 +28,12 @@ public class ProdutoDTO {
     // criando a relação para mostrar as categorias dos produtos
     // categoria não deve ser vazia
     @NotEmpty(message = "Deve ter pelo menos uma categoria")
-    private List<CategoriaDTO> categories = new ArrayList<>();
+    private List<CategoryDTO> categories = new ArrayList<>();
 
-    public ProdutoDTO() {
+    public ProductDTO() {
     }
 
-    public ProdutoDTO(Long id, String name, String description, Double price, String imgUrl) {
+    public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -41,7 +41,7 @@ public class ProdutoDTO {
         this.imgUrl = imgUrl;
     }
 
-    public ProdutoDTO(Product entity) {
+    public ProductDTO(Product entity) {
         id = entity.getId();
         name = entity.getName();
         description = entity.getDescription();
@@ -49,8 +49,8 @@ public class ProdutoDTO {
         imgUrl = entity.getImgUrl();
 
         // inserindo categorias nos produtos
-        for (Categoria categoria : entity.getCategories()) {
-            categories.add(new CategoriaDTO(categoria));
+        for (Category categoria : entity.getCategories()) {
+            categories.add(new CategoryDTO(categoria));
         }
     }
 
@@ -74,7 +74,7 @@ public class ProdutoDTO {
         return imgUrl;
     }
 
-    public List<CategoriaDTO> getCategories() {
+    public List<CategoryDTO> getCategories() {
         return categories;
     }
 }

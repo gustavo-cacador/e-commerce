@@ -1,6 +1,6 @@
 package br.com.gustavo.ecommerce.projections;
 
-public interface UsuarioDetailsProjection {
+public interface UserDetailsProjection {
 
     String getUsername();
     String getSenha();

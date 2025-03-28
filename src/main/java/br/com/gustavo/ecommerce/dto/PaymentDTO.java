@@ -1,23 +1,23 @@
 package br.com.gustavo.ecommerce.dto;
 
-import br.com.gustavo.ecommerce.entities.Pagamento;
+import br.com.gustavo.ecommerce.entities.Payment;
 
 import java.time.Instant;
 
-public class PagamentoDTO {
+public class PaymentDTO {
 
     private Long id;
     private Instant momento;
 
-    public PagamentoDTO() {
+    public PaymentDTO() {
     }
 
-    public PagamentoDTO(Long id, Instant momento) {
+    public PaymentDTO(Long id, Instant momento) {
         this.id = id;
         this.momento = momento;
     }
 
-    public PagamentoDTO(Pagamento entity) {
+    public PaymentDTO(Payment entity) {
         id = entity.getId();
         momento = entity.getMomento();
     }

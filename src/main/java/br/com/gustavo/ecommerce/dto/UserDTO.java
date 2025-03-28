@@ -1,14 +1,14 @@
 package br.com.gustavo.ecommerce.dto;
 
 
-import br.com.gustavo.ecommerce.entities.Usuario;
+import br.com.gustavo.ecommerce.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDTO {
+public class UserDTO {
 
     private Long id;
     private String nome;
@@ -18,7 +18,7 @@ public class UsuarioDTO {
 
     private List<String> roles = new ArrayList<>();
 
-    public UsuarioDTO(Usuario entity) {
+    public UserDTO(User entity) {
         id = entity.getId();
         nome = entity.getNome();
         email = entity.getEmail();

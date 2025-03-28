@@ -9,7 +9,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "tb_usuario")
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +33,10 @@ public class Usuario implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public Usuario() {
+    public User() {
     }
 
-    public Usuario(Long id, String nome, String email, String telefone, LocalDate dataNascimento, String senha) {
+    public User(Long id, String nome, String email, String telefone, LocalDate dataNascimento, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -118,7 +118,7 @@ public class Usuario implements UserDetails {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Usuario usuario = (Usuario) o;
+        User usuario = (User) o;
         return Objects.equals(id, usuario.id);
     }
 

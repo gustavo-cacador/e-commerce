@@ -1,7 +1,7 @@
 package br.com.gustavo.ecommerce.controllers;
 
-import br.com.gustavo.ecommerce.dto.CategoriaDTO;
-import br.com.gustavo.ecommerce.services.CategoriaService;
+import br.com.gustavo.ecommerce.dto.CategoryDTO;
+import br.com.gustavo.ecommerce.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/categories")
-public class CategoriaController {
+public class CategoryController {
 
     @Autowired
-    private CategoriaService categoriaService;
+    private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoriaDTO>> findAll() {
-        List<CategoriaDTO> list = categoriaService.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> list = categoryService.findAll();
         return ResponseEntity.ok(list);
     }
 }
