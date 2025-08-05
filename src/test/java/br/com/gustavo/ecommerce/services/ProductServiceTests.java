@@ -3,6 +3,7 @@ package br.com.gustavo.ecommerce.services;
 import br.com.gustavo.ecommerce.dto.ProductDTO;
 import br.com.gustavo.ecommerce.entities.Product;
 import br.com.gustavo.ecommerce.repositories.ProductRepository;
+import br.com.gustavo.ecommerce.services.exceptions.ResourceNotFoundException;
 import br.com.gustavo.ecommerce.tests.ProductFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,7 @@ public class ProductServiceTests {
         product = ProductFactory.createProduct(productName);
 
         Mockito.when(productRepository.findById(existingProductId)).thenReturn(Optional.of(product));
+        Mockito.when(productRepository.findById(nonExistingProductId)).thenReturn(Optional.empty());
     }
 
     @Test
@@ -48,5 +50,13 @@ public class ProductServiceTests {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(result.getId(), existingProductId);
         Assertions.assertEquals(result.getName(), product.getName());
+    }
+
+    @Test
+    public void findByIdShouldReturnResourceNotFoundExceptionWhenIdDoesNotExist() {
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            productService.findById(nonExistingProductId);
+        });
     }
 }
