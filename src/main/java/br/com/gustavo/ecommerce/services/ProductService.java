@@ -83,7 +83,6 @@ public class ProductService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
-        productRepository.deleteById(id);
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product entity) {
