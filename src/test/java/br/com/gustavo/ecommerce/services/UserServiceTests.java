@@ -1,5 +1,6 @@
 package br.com.gustavo.ecommerce.services;
 
+import br.com.gustavo.ecommerce.dto.UserDTO;
 import br.com.gustavo.ecommerce.entities.User;
 import br.com.gustavo.ecommerce.projections.UserDetailsProjection;
 import br.com.gustavo.ecommerce.repositories.UserRepository;
@@ -89,6 +90,30 @@ public class UserServiceTests {
 
         Assertions.assertThrows(UsernameNotFoundException.class, () -> {
             userService.authenticated();
+        });
+    }
+
+    @Test
+    public void getMeShouldReturnUserDTOWhenUserAuthenticated() {
+
+        UserService spyUserService = Mockito.spy(userService);
+        Mockito.doReturn(user).when(spyUserService).authenticated();
+
+        UserDTO result = spyUserService.getMe();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(result.getEmail(), existingUsername);
+    }
+
+    @Test
+    public void getMeShouldThrowUsernameNotFoundExceptionWhenUserNotAuthenticated() {
+
+        UserService spyUserService = Mockito.spy(userService);
+        Mockito.doThrow(UsernameNotFoundException.class).when(spyUserService).authenticated();
+
+        Assertions.assertThrows(UsernameNotFoundException.class, () -> {
+            @SuppressWarnings("unused")
+            UserDTO result = spyUserService.getMe();
         });
     }
 }
