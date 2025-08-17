@@ -5,6 +5,7 @@ import br.com.gustavo.ecommerce.entities.Role;
 import br.com.gustavo.ecommerce.entities.User;
 import br.com.gustavo.ecommerce.projections.UserDetailsProjection;
 import br.com.gustavo.ecommerce.repositories.UserRepository;
+import br.com.gustavo.ecommerce.util.CustomUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CustomUserUtil customUserUtil;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -37,15 +41,12 @@ public class UserService implements UserDetailsService {
         for (UserDetailsProjection projection : result) {
             user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
         }
-
         return user;
     }
 
     protected User authenticated() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-            String username = jwtPrincipal.getClaim("username");
+            String username = customUserUtil.getLoggedUsername();
             return userRepository.findByEmail(username).get();
         }
         catch (Exception e) {
