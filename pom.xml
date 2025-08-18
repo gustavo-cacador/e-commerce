@@ -105,6 +105,8 @@
 						<exclude>br/com/gustavo/ecommerce/dto/**</exclude>
 						<exclude>br/com/gustavo/ecommerce/controllers/handlers/**</exclude>
 						<exclude>br/com/gustavo/ecommerce/services/exceptions/**</exclude>
+						<exclude>br/com/gustavo/ecommerce/util/**</exclude>
+						<exclude>br/com/gustavo/ecommerce/controllers/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
