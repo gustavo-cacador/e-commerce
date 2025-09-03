@@ -1,5 +1,9 @@
 package br.com.gustavo.ecommerce.controllers.it;
 
+import br.com.gustavo.ecommerce.dto.ProductDTO;
+import br.com.gustavo.ecommerce.entities.Product;
+import br.com.gustavo.ecommerce.tests.TokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +27,33 @@ public class ProductControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private TokenUtil tokenUtil;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private String clientUsername, clientPassword, adminUsername, adminPassword;
+    private String clientToken, adminToken, invalidToken;
+
     private String productName;
-    private String adminToken;
+
+    private Product product;
+    private ProductDTO productDTO;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
+
+        clientUsername = "maria@gmail.com";
+        clientPassword = "123456";
+        adminUsername = "alex@gmail.com";
+        adminPassword = "123456";
 
         productName = "Macbook";
+
+        adminToken = tokenUtil.obtainAccessToken(mockMvc, adminUsername, adminPassword);
+        clientToken = tokenUtil.obtainAccessToken(mockMvc, clientUsername, clientPassword);
+        invalidToken = adminToken + "xpto"; // simulando senha errada
 
     }
 
@@ -65,7 +89,7 @@ public class ProductControllerIT {
     @Test
     public void insertShouldReturnProductDTOCreatedWhenAdminLogged() throws Exception{
 
-        String jsonBody = "";
+        String jsonBody = objectMapper.writeValueAsString(productDTO);
 
         ResultActions result = mockMvc
                 .perform(post("/products")
