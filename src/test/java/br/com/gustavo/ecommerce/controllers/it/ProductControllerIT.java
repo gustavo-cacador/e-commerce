@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,6 +24,7 @@ public class ProductControllerIT {
     private MockMvc mockMvc;
 
     private String productName;
+    private String adminToken;
 
     @BeforeEach
     void setUp() {
@@ -57,5 +59,18 @@ public class ProductControllerIT {
         result.andExpect(jsonPath("$.content[0].name").value("The Lord of the Rings"));
         result.andExpect(jsonPath("$.content[0].price").value(90.5));
         result.andExpect(jsonPath("$.content[0].imgUrl").value("https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg"));
+    }
+
+    // insercao de produto insere produto com dados válidos quando logado como admin
+    @Test
+    public void insertShouldReturnProductDTOCreatedWhenAdminLogged() throws Exception{
+
+        String jsonBody = "";
+
+        ResultActions result = mockMvc
+                .perform(post("/products")
+                        .header("Authorization", "Bearer " + adminToken)
+                        .content(jsonBody)
+                        .accept(MediaType.APPLICATION_JSON));
     }
 }
