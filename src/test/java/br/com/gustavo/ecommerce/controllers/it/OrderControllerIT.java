@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,8 +38,8 @@ public class OrderControllerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private String clientUsername, clientPassword, adminUsername, adminPassword;
-    private String clientToken, adminToken, invalidToken;
+    private String clientUsername, clientPassword, adminUsername, adminPassword, adminOnlyUsername, adminOnlyPassword;
+    private String clientToken, adminToken, adminOnlyToken, invalidToken;
     private Long existingOrderId, otherOrderId, nonExistingOrderId;
 
     private Order order;
@@ -52,6 +53,8 @@ public class OrderControllerIT {
         clientPassword = "123456";
         adminUsername = "maria@gmail.com";
         adminPassword = "123456";
+        adminOnlyUsername = "ana@gmail.com";
+        adminOnlyPassword = "123456";
 
         existingOrderId = 1L;
         otherOrderId = 2L;
@@ -59,6 +62,7 @@ public class OrderControllerIT {
 
         adminToken = tokenUtil.obtainAccessToken(mockMvc, adminUsername, adminPassword);
         clientToken = tokenUtil.obtainAccessToken(mockMvc, clientUsername, clientPassword);
+        adminOnlyToken = tokenUtil.obtainAccessToken(mockMvc, adminOnlyUsername, adminOnlyPassword);
         invalidToken = adminToken + "xpto"; // simulando senha errada
 
         user = UserFactory.createClientUser();
@@ -67,6 +71,8 @@ public class OrderControllerIT {
         Product product = ProductFactory.createProduct();
         OrderItem orderItem = new OrderItem(order, product, 2, 10.0);
         order.getItems().add(orderItem);
+
+        orderDTO = new OrderDTO(order);
     }
 
     // busca de pedido por ir retorna pedido existente qnd logado como admin
@@ -160,6 +166,81 @@ public class OrderControllerIT {
                         .header("Authorization", "Bearer " + invalidToken)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print());
+
+        result.andExpect(status().isUnauthorized());
+    }
+
+    // insert de pedido retorna 201 qnd cliente logado
+    @Test
+    public void insertShouldReturnOrderDTOCreatedWhenClientLogged() throws Exception {
+
+        String jsonBody = objectMapper.writeValueAsString(orderDTO);
+
+        ResultActions result =
+                mockMvc.perform(post("/orders")
+                                .header("Authorization", "Bearer " + clientToken)
+                                .content(jsonBody)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                        .andDo(MockMvcResultHandlers.print());
+
+        result.andExpect(status().isCreated());
+        result.andExpect(jsonPath("$.id").value(4L));
+        result.andExpect(jsonPath("$.momento").exists());
+        result.andExpect(jsonPath("$.status").value("AGUARDANDO_PAGAMENTO"));
+        result.andExpect(jsonPath("$.cliente").exists());
+        result.andExpect(jsonPath("$.itens").exists());
+        result.andExpect(jsonPath("$.total").exists());
+    }
+
+
+    // insert de pedido retorna 422 qnd cliente estiver logado e pedido n tiver nenhum item
+    @Test
+    public void insertShouldReturnUnprocessableEntityWhenClientLoggedAndOrderHasNoItem() throws Exception {
+
+        orderDTO.getItens().clear();
+
+        String jsonBody = objectMapper.writeValueAsString(orderDTO);
+
+        ResultActions result =
+                mockMvc.perform(post("/orders")
+                                .header("Authorization", "Bearer " + clientToken)
+                                .content(jsonBody)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                        .andDo(MockMvcResultHandlers.print());
+
+        result.andExpect(status().isUnprocessableEntity());
+    }
+
+    // insert de pedido retorna 403 qnd logado apenas como admin (para fazer um pedido deve ser um cliente)
+    @Test
+    public void insertShouldReturnForbiddenWhenAdminLogged() throws Exception {
+
+        String jsonBody = objectMapper.writeValueAsString(orderDTO);
+
+        ResultActions result =
+                mockMvc.perform(post("/orders")
+                        .header("Authorization", "Bearer " + adminOnlyToken)
+                        .content(jsonBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isForbidden());
+    }
+
+    // insert de pedido retorna 401 qnd n for um cliente nem um admin
+    @Test
+    public void insertShouldReturnUnauthorizedWhenInvalidToken() throws Exception {
+
+        String jsonBody = objectMapper.writeValueAsString(orderDTO);
+
+        ResultActions result =
+                mockMvc.perform(post("/orders")
+                        .header("Authorization", "Bearer " + invalidToken)
+                        .content(jsonBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isUnauthorized());
     }
