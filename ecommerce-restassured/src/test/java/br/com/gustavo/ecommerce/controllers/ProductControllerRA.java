@@ -1,5 +1,6 @@
 package br.com.gustavo.ecommerce.controllers;
 
+import br.com.gustavo.ecommerce.tests.TokenUtil;
 import io.restassured.http.ContentType;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import static org.hamcrest.Matchers.*;
 
 public class ProductControllerRA {
 
+    private String clientUsername, clientPassword, adminUsername, adminPassword;
+    private String clientToken, adminToken, invalidToken;
     private Long existingProductId, nonExistingProductId;
     private String productName;
 
@@ -24,6 +27,15 @@ public class ProductControllerRA {
     @BeforeEach
     void setUp() {
         baseURI = "http://localhost:8080";
+
+        clientUsername = "alex@gmail.com";
+        clientPassword = "123456";
+        adminUsername = "maria@gmail.com";
+        adminPassword = "123456";
+
+        clientToken = TokenUtil.obtainAccessToken(clientUsername, clientPassword);
+        adminToken = TokenUtil.obtainAccessToken(adminUsername, adminPassword);
+        invalidToken = adminToken + "xpto";
 
         productName = "Macbook";
 
@@ -100,6 +112,7 @@ public class ProductControllerRA {
                 .body("content.findAll { it.price > 2000 }.name", hasItems("Smart TV", "PC Gamer Hera"));
     }
 
+    // insercao de produto insere produto com dados validos e qnd admin estiver logado
     @Test
     public void insertShouldReturnProductCreatedWhenAdminLogged() {
 
@@ -119,6 +132,6 @@ public class ProductControllerRA {
                 .body("description", equalTo("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui ad, adipisci illum ipsam velit et odit eaque reprehenderit ex maxime delectus dolore labore, quisquam quae tempora natus esse aliquam veniam doloremque quam minima culpa alias maiores commodi. Perferendis enim"))
                 .body("imgUrl", equalTo("https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg"))
                 .body("price", is(40.0F))
-                .body("categories", hasItems(2, 3));
+                .body("categories.id", hasItems(2, 3));
     }
 }
