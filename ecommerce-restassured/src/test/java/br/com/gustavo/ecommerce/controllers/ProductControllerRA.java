@@ -134,4 +134,125 @@ public class ProductControllerRA {
                 .body("price", is(40.0F))
                 .body("categories.id", hasItems(2, 3));
     }
+
+    // insercao de produto retorna 422 e mensagens customizadas com dados invalidos qnd logado como admin e campo name for invalido
+    @Test
+    public void insertShouldReturnUnprocessbleEntityWhenAdminLoggedAndInvalidName() {
+
+        postProductInstance.put("name", "ab");
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(422)
+                .body("errors.message[0]", equalTo("Nome precisa ter de 3 a 80 caracteres"));
+    }
+
+    // insercao de produto retorna 422 e mensagens customizadas com dados invalidos qnd logado como admin e campo description for invalido
+    @Test
+    public void insertShouldReturnUnprocessbleEntityWhenAdminLoggedAndInvalidDescription() {
+
+        postProductInstance.put("description", "ab");
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(422)
+                .body("errors.message[0]", equalTo("Descrição precisa ter no mínimo 10 caracteres"));
+    }
+
+    // insercao de produto retorna 422 e mensagens customizadas com dados invalidos qnd logado como admin e campo price for negativo
+    @Test
+    public void insertShouldReturnUnprocessbleEntityWhenAdminLoggedAndPriceIsNegative() {
+
+        postProductInstance.put("price", -50.0);
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(422)
+                .body("errors.message[0]", equalTo("O preço precisa ser positivo"));
+    }
+
+    // insercao de produto retorna 422 e mensagens customizadas com dados invalidos qnd logado como admin e campo price for 0
+    @Test
+    public void insertShouldReturnUnprocessbleEntityWhenAdminLoggedAndPriceIsZero() {
+
+        postProductInstance.put("price", 0.0);
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(422)
+                .body("errors.message[0]", equalTo("O preço precisa ser positivo"));
+    }
+
+    // insercao de produto retorna 422 e mensagens customizadas com dados invalidos qnd logado como admin e qnd n tiver categoria associada
+    @Test
+    public void insertShouldReturnUnprocessbleEntityWhenAdminLoggedAndProductHasNoCategory() {
+
+        postProductInstance.put("categories", null);
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(422)
+                .body("errors.message[0]", equalTo("Deve ter pelo menos uma categoria"));
+    }
+
+    // outra forma de fazer
+    @Test
+    public void insertShouldReturnUnprocessbleEntityWhenAdminLoggedAndProductHasNoCategory2() {
+
+        postProductInstance.put("categories", null);
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(422)
+                .body("errors.fieldNome", hasItems("categories"))
+                .body("errors.message", hasItems("Deve ter pelo menos uma categoria"));
+    }
 }
