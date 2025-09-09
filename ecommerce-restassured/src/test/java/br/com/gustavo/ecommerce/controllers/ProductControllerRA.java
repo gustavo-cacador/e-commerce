@@ -255,4 +255,40 @@ public class ProductControllerRA {
                 .body("errors.fieldNome", hasItems("categories"))
                 .body("errors.message", hasItems("Deve ter pelo menos uma categoria"));
     }
+
+    // insercao de produto retorna 403 qnd logado como cliente
+    @Test
+    public void insertShouldReturnForbiddenWhenClientLogged() {
+
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + clientToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(403);
+    }
+
+    // insercao de produto retorna 401 qnd nao logado como cliente nem admin
+    @Test
+    public void insertShouldReturnUnauthorizedWhenInvalidToken() {
+
+        JSONObject newProduct = new JSONObject(postProductInstance);
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + invalidToken)
+                .body(newProduct)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post("products")
+                .then()
+                .statusCode(401);
+    }
 }
