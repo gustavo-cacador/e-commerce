@@ -19,7 +19,7 @@ public class ProductControllerRA {
 
     private String clientUsername, clientPassword, adminUsername, adminPassword;
     private String clientToken, adminToken, invalidToken;
-    private Long existingProductId, nonExistingProductId;
+    private Long existingProductId, nonExistingProductId, dependentProductId;
     private String productName;
 
     private Map<String, Object> postProductInstance;
@@ -288,6 +288,78 @@ public class ProductControllerRA {
                 .accept(ContentType.JSON)
                 .when()
                 .post("products")
+                .then()
+                .statusCode(401);
+    }
+
+    // delecao de produto deleta produto existente qnd logado como admin
+    @Test
+    public void deleteShouldReturnNoContentWhenIdExistsAndAdminLogged() {
+
+        existingProductId = 25L;
+
+        given()
+                .header("Authorization", "Bearer " + adminToken)
+                .when()
+                .delete("products/{id}", existingProductId)
+                .then()
+                .statusCode(204);
+    }
+
+    // delecao de produto retorna 404 para produto inexistente qnd logado como admin
+    @Test
+    public void deleteShouldReturnNotFoundWhenIdDoesNotExistAndAdminLogged() {
+
+        nonExistingProductId = 100L;
+
+        given()
+                .header("Authorization", "Bearer " + adminToken)
+                .when()
+                .delete("products/{id}", nonExistingProductId)
+                .then()
+                .statusCode(404)
+                .body("error", equalTo("Produto com id: " + nonExistingProductId + ", não encontrado."))
+                .body("status", equalTo(404));
+    }
+
+    // delecao de produto retorna 400 para produto dependente (produto inserido num pedido por exemplo) qnd logado como admin
+    @Test
+    public void deleteShouldReturnBadRequestWhenDependentIdAndAdminLogged() {
+
+        dependentProductId = 3L;
+
+        given()
+                .header("Authorization", "Bearer " + adminToken)
+                .when()
+                .delete("products/{id}", dependentProductId)
+                .then()
+                .statusCode(400);
+    }
+
+    // delecao de produto retorna 403 qnd logado como cliente
+    @Test
+    public void deleteShouldReturnForbiddenWhenClientLogged() {
+
+        existingProductId = 4L;
+
+        given()
+                .header("Authorization", "Bearer " + clientToken)
+                .when()
+                .delete("products/{id}", existingProductId)
+                .then()
+                .statusCode(403);
+    }
+
+    // delecao de produto retorna 401 qnd n logado como cliente nem admin
+    @Test
+    public void deleteShouldReturnUnauthorizedWhenInvalidToken() {
+
+        existingProductId = 4L;
+
+        given()
+                .header("Authorization", "Bearer " + invalidToken)
+                .when()
+                .delete("products/{id}", existingProductId)
                 .then()
                 .statusCode(401);
     }
