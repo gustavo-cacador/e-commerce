@@ -14,7 +14,7 @@ public class CategoryControllerRA {
         baseURI = "http://localhost:8080";
     }
 
-    // busca de categoria deve retornar 200 ao buscar todas as categorias
+    // busca de categoria retorna 200 e uma lista de categorias
     @Test
     public void findAllShouldReturnListOfCategories() {
         given()
