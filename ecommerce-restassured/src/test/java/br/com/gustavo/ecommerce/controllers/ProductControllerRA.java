@@ -23,6 +23,7 @@ public class ProductControllerRA {
     private String productName;
 
     private Map<String, Object> postProductInstance;
+    private Map<String, Object> putProductInstance;
 
     @BeforeEach
     void setUp() {
@@ -45,6 +46,12 @@ public class ProductControllerRA {
         postProductInstance.put("imgUrl", "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg");
         postProductInstance.put("price", 40.0);
 
+        putProductInstance = new HashMap<>();
+        putProductInstance.put("name", "Produto atualizado");
+        putProductInstance.put("description", "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui ad, adipisci illum ipsam velit et odit eaque reprehenderit ex maxime delectus dolore labore, quisquam quae tempora natus esse aliquam veniam doloremque quam minima culpa alias maiores commodi. Perferendis enim");
+        putProductInstance.put("imgUrl", "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg");
+        putProductInstance.put("price", 200.0);
+
         List<Map<String, Object>> categories = new ArrayList<>();
 
         Map<String, Object> category1 = new HashMap<>();
@@ -57,6 +64,7 @@ public class ProductControllerRA {
         categories.add(category2);
 
         postProductInstance.put("categories", categories);
+        putProductInstance.put("categories", categories);
     }
 
     @Test
@@ -74,6 +82,20 @@ public class ProductControllerRA {
                 .body("price", is(2190.0F))
                 .body("categories.id", hasItems(2,3))
                 .body("categories.name", hasItems("Eletrônicos", "Computadores"));
+    }
+
+    // busca por id retorna NotFound qnd id do produto n existe
+    @Test
+    public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() {
+
+        nonExistingProductId = 100L;
+
+        given()
+                .get("/movies/{id}", nonExistingProductId)
+                .then()
+                .statusCode(404)
+                .body("error", equalTo("Not Found"))
+                .body("status", equalTo(404));
     }
 
     // busca paginada existe listagem paginada qnd campo nome nao preenchido e checa se os produtos Macbook Pro e PC Gamer Tera estao contidos
@@ -288,6 +310,191 @@ public class ProductControllerRA {
                 .accept(ContentType.JSON)
                 .when()
                 .post("products")
+                .then()
+                .statusCode(401);
+    }
+
+    // atualizacao de produto retorna 200 ok ao atualizar produto qnd id do produto existe e estiver logado como admin
+    @Test
+    public void updateShouldReturnProductWhenIdExistsAndAdminLogged() {
+
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(product)
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(200)
+                .body("name", equalTo("Produto atualizado"))
+                .body("price", is(200.0f))
+                .body("imgUrl", equalTo("https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg"))
+                .body("categories.id", hasItems(2, 3))
+                .body("categories.name", hasItems("Eletrônicos", "Computadores"));
+    }
+
+    // atualizacao deve retornar 404 qnd id do produto n existe e estiver logado como admin
+    @Test
+    public void updateShouldReturnNotFoundWhenIdDoesNotExistAndAdminLogged() {
+
+        JSONObject product = new JSONObject(putProductInstance);
+        nonExistingProductId = 100L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(product)
+                .when()
+                .put("/products/{id}", nonExistingProductId)
+                .then()
+                .statusCode(404)
+                .body("error", equalTo("Produto com id: " + nonExistingProductId + ", não encontrado."))
+                .body("status", equalTo(404));
+    }
+
+    // atualizacao deve retornar UnprocessableEntity qnd id do produto existe, admin estiver logado, porém nome for inválido
+    @Test
+    public void updateShouldReturnUnprocessableEntityWhenIdExistsAndAdminLoggedAndInvalidName() {
+
+        putProductInstance.put("name", "ab");
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(product)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(422);
+    }
+
+    // atualizacao deve retornar UnprocessableEntity qnd id do produto existe, admin estiver logado, porém descricao for inválida
+    @Test
+    public void updateShouldReturnUnprocessableEntityWhenAdminLoggedAndInvalidDescription() {
+
+        putProductInstance.put("description", "ab");
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(product)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(422);
+    }
+
+    // atualizacao deve retornar UnprocessableEntity qnd id do produto existe, admin estiver logado, porém preco for negativo
+    @Test
+    public void updateShouldReturnUnprocessableEntityWhenIdExistsAndAdminLoggedAndPriceIsNegative() {
+
+        putProductInstance.put("price", -2.0);
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(product)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(422);
+    }
+
+    // atualizacao deve retornar UnprocessableEntity qnd id do produto existe, admin estiver logado, porém preco for 0
+    @Test
+    public void updateShouldReturnUnprocessableEntityWhenIdExistsAndAdminLoggedAndPriceIsZero() {
+
+        putProductInstance.put("price", 0.0);
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(product)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(422);
+    }
+
+    // atualizacao deve retornar UnprocessableEntity qnd id do produto existe, admin estiver logado, porém produto n tiver nenhuma categoria associada
+    @Test
+    public void updateShouldReturnUnprocessableEntityWhenIdExistsAndAdminLoggedAndProductHasNoCategory() {
+
+        putProductInstance.put("categories", null);
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + adminToken)
+                .body(product)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .log()
+                .all()
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(422);
+    }
+
+    // atualizacao deve retornar forbidden 403 qnd id do produto existe mas estiver logado como cliente
+    @Test
+    public void updateShouldReturnForbiddenWhenIdExistsAndClientLogged() {
+
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + clientToken)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(product)
+                .when()
+                .put("/products/{id}", existingProductId)
+                .then()
+                .statusCode(403);
+    }
+
+    // atualizacao deve retornar 401 n autorizado qnd id do produto existe mas n estiver logado como admin
+    @Test
+    public void updateShouldReturnUnauthorizedWhenIdExistsAndInvalidToken() {
+
+        JSONObject product = new JSONObject(putProductInstance);
+        existingProductId = 10L;
+
+        given()
+                .header("Content-type", "application/json")
+                .header("Authorization", "Bearer " + invalidToken)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(product)
+                .when()
+                .put("/products/{id}", existingProductId)
                 .then()
                 .statusCode(401);
     }
